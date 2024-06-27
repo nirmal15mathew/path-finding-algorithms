@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+        .toolbar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1em;
+            background-color: rgb(255, 255, 255);
+            box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.397);
+            border-radius: 0.4em;
+        }
+        button {
+            padding: 0.5em;
+            background-color: #fff;
+            border: 0;
+            border-radius: 0.2em;
+        }
+        .active {
+            background-color: #ccc;
+        }
+        #play-btn, #rst-btn {
+            padding: 1em;
+            position:fixed;
+            bottom: 20px;
+            border-radius: 25%;
+            box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.397);
+        }
+        #play-btn {
+            left: 20px;
+        }
+        #rst-btn {
+            left: 80px;
+        }
+    </style>
+</head>
+<body>
+    <button id="play-btn">Run</button>
+    <button id="rst-btn">Reset</button>
+    <div class="toolbar">
+        <button class="active" id="block">
+            Block
+        </button>
+        <button id="start">
+            Start
+        </button>
+        <button id="end">
+            End
+        </button>
+    </div>
+    <script src="p5.min.js"></script>
+    <script src="ui.js"></script>
+    <script src="sketch.js"></script>
+</body>
+</html>
