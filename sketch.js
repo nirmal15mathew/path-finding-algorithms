@@ -250,7 +250,7 @@ function resetGridPreserveBlock() {
 function showPath(endPos, count = 0) {
     grid[endPos[0]][[endPos[1]]].parent.state = "crct"
     let new_end = [grid[endPos[0]][[endPos[1]]].parent.row, grid[endPos[0]][[endPos[1]]].parent.col]
-    if (count < 20) {
+    if (count < visited.length) {
         showPath(new_end, count + 1)
         STATE_COLOR.highlight = ""
     }
