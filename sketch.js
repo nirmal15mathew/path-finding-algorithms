@@ -29,7 +29,8 @@ function setup() {
         highlight: "red",
         start: "blue",
         end: "green",
-        active: "yellow"
+        active: "yellow",
+        crct: "violet"
     }
 
     // initializing the grid
@@ -47,8 +48,7 @@ function setup() {
         run = !run;
     })
     rst_btn.addEventListener('click', () => {
-        grid = []
-        resetGrid()
+        resetGridPreserveBlock()
         grid[start_pos[0]][start_pos[1]].state = "start"
         grid[end_pos[0]][end_pos[1]].state = "end"
         last_node = grid[start_pos[0]][start_pos[1]]
@@ -75,6 +75,8 @@ function setup() {
 function draw() {
     renderGrid(grid)
     if (last_node.row == end_pos[0] && last_node.col == end_pos[1]) {
+        showPath(end_pos);
+        renderGrid(grid)
         // noLoop()
     }
     else if (run) {
@@ -169,13 +171,15 @@ function gridUpdate() {
     
     let n = getNeighbours(grid, last_node.row, last_node.col)
     n.forEach(cell => {
-        // cell.highlight()
-        cell.setParent(last_node)
-        cell.generateF(end_pos)
-        visited.push(cell)
+        if (!visited.includes(cell)) {
+            cell.highlight()
+            cell.setParent(last_node)
+            cell.generateF(end_pos)
+            visited.push(cell)
+        }
     })
     visited.sort((a, b) => a.f - b.f);
-    // last_node.state = "highlight"
+    last_node.state = "highlight"
     for (let i = 0; i < visited.length; i++) {
         if (!closed.includes(visited[i])) {
             last_node = visited[i]
@@ -212,6 +216,7 @@ function resetGrid() {
     run = false
     visited = []
     closed = []
+    grid = []
     // initializing the grid
     let cols = width / size;
     let rows = height / size;
@@ -219,10 +224,39 @@ function resetGrid() {
         grid.push([])
         for (let j = 0; j < cols; j++) {
             grid[i][j] = new Cell(i, j, "path", size, STATE_COLOR)
+            
         }
     }
 
 }
+
+function resetGridPreserveBlock() {
+    run = false
+    visited = []
+    closed = []
+    // initializing the grid
+    let cols = width / size;
+    let rows = height / size;
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            if (grid[i][j].state != "block") {
+                grid[i][j] = new Cell(i, j, "path", size, STATE_COLOR)
+            }
+        }
+    }
+}
+
+
+function showPath(endPos, count = 0) {
+    grid[endPos[0]][[endPos[1]]].parent.state = "crct"
+    let new_end = [grid[endPos[0]][[endPos[1]]].parent.row, grid[endPos[0]][[endPos[1]]].parent.col]
+    if (count < 20) {
+        showPath(new_end, count + 1)
+        STATE_COLOR.highlight = ""
+    }
+}
+
+
 
 function mousePressed() {
     if (mouseX < width - 300 && mouseY < 600) {
